@@ -10,12 +10,12 @@ namespace v8_api
         std::cout << "Initializing v8_api::Core\n";
 
         v8::V8::InitializeICU();
-        std::unique_ptr<v8::Platform> platform = v8::platform::NewDefaultPlatform();
-        v8::V8::InitializePlatform(platform.get());
     }
 
     void Core::Run(const char* source_code)
     {
+        std::unique_ptr<v8::Platform> platform = v8::platform::NewDefaultPlatform();
+        v8::V8::InitializePlatform(platform.get());
         v8::V8::Initialize();
         v8::Isolate::CreateParams create_params;
         create_params.array_buffer_allocator = v8::ArrayBuffer::Allocator::NewDefaultAllocator();
