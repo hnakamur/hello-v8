@@ -10,9 +10,12 @@ namespace v8_api
         std::cout << "Initializing v8_api::Core\n";
 
         v8::V8::InitializeICU();
-
         std::unique_ptr<v8::Platform> platform = v8::platform::NewDefaultPlatform();
         v8::V8::InitializePlatform(platform.get());
+    }
+
+    void Core::Run(const char* source_code)
+    {
         v8::V8::Initialize();
         v8::Isolate::CreateParams create_params;
         create_params.array_buffer_allocator = v8::ArrayBuffer::Allocator::NewDefaultAllocator();
@@ -21,18 +24,6 @@ namespace v8_api
         v8::HandleScope scope(isolate_);
         v8::Local<v8::Context> impl = v8::Context::New(isolate_);
         impl_.Reset(isolate_, impl);
-	
-        v8::HandleScope handle_scope(isolate_);
-        {
-            const char* src = "var a = 4;";
-            v8::MaybeLocal<v8::String> m_source = v8::String::NewFromUtf8(isolate_, src);
-            v8::Local<v8::String> source = m_source.ToLocalChecked();
-            v8::MaybeLocal<v8::Script> m_script = v8::Script::Compile(impl, source);
-	}
-    }
-
-    void Core::Run(const char* source_code)
-    {
 
         v8::HandleScope handle_scope(isolate_);
         {
